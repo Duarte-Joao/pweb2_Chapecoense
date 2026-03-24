@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Jogador;
 use Illuminate\Http\Request;
+use App\Models\Jogador;
 
 class JogadorController extends Controller
 {
     public function index()
     {
-        $jogadores = Jogador::all();
-        return view('jogadores.list', compact('jogadores'));
+        $jogadores = Jogador::orderBy('nome')->get();
+        return view('jogadores.index', compact('jogadores'));
     }
 
     public function create()
@@ -20,16 +20,27 @@ class JogadorController extends Controller
 
     public function store(Request $request)
     {
-        Jogador::create($request->all());
-        return redirect()->route('jogadores.index');
-    }
+        $request->validate([
+            'nome'            => 'required|string|max:255',
+            'posicao'         => 'required|string|max:100',
+            'numero_camisa'   => 'required|integer|min:1|max:99',
+            'data_nascimento' => 'required|date',
+            'nacionalidade'   => 'required|string|max:100',
+        ], [
+            'nome.required'            => 'O nome é obrigatório.',
+            'posicao.required'         => 'A posição é obrigatória.',
+            'numero_camisa.required'   => 'O número da camisa é obrigatório.',
+            'numero_camisa.integer'    => 'O número da camisa deve ser um número inteiro.',
+            'data_nascimento.required' => 'A data de nascimento é obrigatória.',
+            'data_nascimento.date'     => 'Informe uma data válida.',
+            'nacionalidade.required'   => 'A nacionalidade é obrigatória.',
+        ]);
 
-    public function destroy($id)
-    {
-        $jogador = Jogador::findOrFail($id);
-        $jogador->delete();
+        Jogador::create($request->only([
+            'nome', 'posicao', 'numero_camisa', 'data_nascimento', 'nacionalidade'
+        ]));
 
-        return redirect()->route('jogadores.index');
+        return redirect()->route('jogadores.index')->with('success', 'Jogador cadastrado com sucesso!');
     }
 
     public function edit($id)
@@ -40,9 +51,43 @@ class JogadorController extends Controller
 
     public function update(Request $request, $id)
     {
-        $jogador = Jogador::findOrFail($id);
-        $jogador->update($request->all());
+        $request->validate([
+            'nome'            => 'required|string|max:255',
+            'posicao'         => 'required|string|max:100',
+            'numero_camisa'   => 'required|integer|min:1|max:99',
+            'data_nascimento' => 'required|date',
+            'nacionalidade'   => 'required|string|max:100',
+        ], [
+            'nome.required'            => 'O nome é obrigatório.',
+            'posicao.required'         => 'A posição é obrigatória.',
+            'numero_camisa.required'   => 'O número da camisa é obrigatório.',
+            'numero_camisa.integer'    => 'O número da camisa deve ser um número inteiro.',
+            'data_nascimento.required' => 'A data de nascimento é obrigatória.',
+            'data_nascimento.date'     => 'Informe uma data válida.',
+            'nacionalidade.required'   => 'A nacionalidade é obrigatória.',
+        ]);
 
-        return redirect()->route('jogadores.index');
+        $jogador = Jogador::findOrFail($id);
+        $jogador->update($request->only([
+            'nome', 'posicao', 'numero_camisa', 'data_nascimento', 'nacionalidade'
+        ]));
+
+        return redirect()->route('jogadores.index')->with('success', 'Jogador atualizado com sucesso!');
+    }
+
+    public function destroy($id)
+    {
+        $jogador = Jogador::findOrFail($id);
+        $jogador->delete();
+
+        return redirect()->route('jogadores.index')->with('success', 'Jogador removido com sucesso!');
+    }
+
+    public function search(Request $request)
+    {
+        $busca     = $request->input('busca');
+        $jogadores = Jogador::where('nome', 'like', "%{$busca}%")->orderBy('nome')->get();
+
+        return view('jogadores.index', compact('jogadores', 'busca'));
     }
 }
