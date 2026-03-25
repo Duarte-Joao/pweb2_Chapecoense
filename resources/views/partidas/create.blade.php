@@ -47,7 +47,7 @@
             </select>
         </div>
 
-        <div class="grid grid-cols-2 gap-4 mb-6">
+        <div class="grid grid-cols-2 gap-4 mb-4">
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Gols Chapecoense *</label>
                 <input type="number" name="gols_chapecoense" value="{{ old('gols_chapecoense', 0) }}" min="0"
@@ -60,15 +60,23 @@
             </div>
         </div>
 
+        {{-- SELECT puxando dados da tabela jogadores --}}
+        <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Artilheiro da Partida</label>
+            <select name="jogador_id"
+                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+                <option value="">Nenhum</option>
+                @foreach($jogadores as $jogador)
+                    <option value="{{ $jogador->id }}" {{ old('jogador_id') == $jogador->id ? 'selected' : '' }}>
+                        {{ $jogador->nome }} ({{ $jogador->posicao }} - Camisa {{ $jogador->numero_camisa }})
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
         <div class="flex gap-3">
-            <button type="submit"
-                    class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">
-                Salvar
-            </button>
-            <a href="{{ route('partidas.index') }}"
-               class="bg-gray-300 text-gray-700 px-6 py-2 rounded hover:bg-gray-400">
-                Cancelar
-            </a>
+            <button type="submit" class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Salvar</button>
+            <a href="{{ route('partidas.index') }}" class="bg-gray-300 text-gray-700 px-6 py-2 rounded hover:bg-gray-400">Cancelar</a>
         </div>
     </form>
 </div>

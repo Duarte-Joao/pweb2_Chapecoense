@@ -16,6 +16,16 @@ class Partida extends Model
         'estadio',
         'competicao',
         'gols_chapecoense',
-        'gols_adversario'
+        'gols_adversario',
+        'jogador_id',       // artilheiro da partida
     ];
+
+    /**
+     * Uma partida pertence a um jogador (artilheiro).
+     * O relacionamento é nullable — partida pode não ter artilheiro cadastrado.
+     */
+    public function artilheiro()
+    {
+        return $this->belongsTo(Jogador::class, 'jogador_id');
+    }
 }
