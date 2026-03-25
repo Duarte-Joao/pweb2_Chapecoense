@@ -16,7 +16,7 @@
     </div>
 @endif
 
-{{--<form action="{{ route('jogadores.search') }}" method="POST" class="flex gap-2 mb-6">
+<form action="{{ route('jogadores.search') }}" method="POST" class="flex gap-2 mb-6">
     @csrf
     <input type="text" name="busca" value="{{ $busca ?? '' }}"
            placeholder="Buscar por nome..."
@@ -27,7 +27,7 @@
     <a href="{{ route('jogadores.index') }}" class="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400">
         Limpar
     </a>
-</form>--}}
+</form>
 
 <div class="overflow-x-auto">
     <table class="w-full bg-white rounded shadow text-sm">

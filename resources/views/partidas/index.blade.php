@@ -16,14 +16,14 @@
     </div>
 @endif
 
-{{--<form action="{{ route('partidas.search') }}" method="POST" class="flex gap-2 mb-6">
+<form action="{{ route('partidas.search') }}" method="POST" class="flex gap-2 mb-6">
     @csrf
     <input type="text" name="busca" value="{{ $busca ?? '' }}"
            placeholder="Buscar por adversário..."
            class="border border-gray-300 rounded px-3 py-2 w-full max-w-sm focus:outline-none focus:ring-2 focus:ring-green-500">
     <button type="submit" class="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800">Buscar</button>
     <a href="{{ route('partidas.index') }}" class="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400">Limpar</a>
-</form>--}}
+</form>
 
 <div class="overflow-x-auto">
     <table class="w-full bg-white rounded shadow text-sm">
