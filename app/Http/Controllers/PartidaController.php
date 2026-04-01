@@ -10,7 +10,6 @@ class PartidaController extends Controller
 {
     public function index()
     {
-        // with('artilheiro') carrega o jogador junto — evita N+1 queries
         $partidas = Partida::with('artilheiro')->orderBy('data_partida', 'desc')->get();
         return view('partidas.index', compact('partidas'));
     }
